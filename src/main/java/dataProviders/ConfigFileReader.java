@@ -31,6 +31,12 @@ public class ConfigFileReader {
 		}		
 	}
 	
+	public String getFilePath(){
+		String filePath = properties.getProperty("filePath");
+		if(filePath!= null) return filePath;
+		else throw new RuntimeException("FilePath not specified in the Configuration.properties file.");		
+	}
+	
 	public String getDriverPath(){
 		String driverPath = properties.getProperty("driverPath");
 		if(driverPath!= null) return driverPath;

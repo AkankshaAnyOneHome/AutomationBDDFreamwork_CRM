@@ -1,5 +1,6 @@
 package CRMPages;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -17,6 +18,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -31,6 +33,7 @@ import dataProviders.ConfigFileReader;
 public class CRMLeadPage{
 	private static Logger log=LogManager.getLogger(CRMLeadPage.class.getName());
 	WebDriver driver;
+	ConfigFileReader configFileReader = new ConfigFileReader();
 	//WebDriverWait wait = new WebDriverWait(driver,30);
 	@FindBy(xpath = "//span[contains(text(),'Leads')]")
 	WebElement MenuLead;
@@ -74,7 +77,8 @@ public class CRMLeadPage{
 	WebElement btnLogEvent;
 	@FindBy(xpath = "//a[@id='send_mail_button']")
 	WebElement btnSendMail;
-	
+	@FindBy(xpath = "//a[@id='send_sms_button']")
+	WebElement btnSendSms;
 	@FindBy(xpath="//div[@class='select2-container selectedTypeDropdown']/a/span[1]")
 	WebElement selectedLogType;
 	@FindBy(css="a.h4")
@@ -93,15 +97,23 @@ public class CRMLeadPage{
 	WebElement dateMonthSwichCalender14;
 	@FindBy(xpath = "//div[@class='datepicker dropdown-menu'][13]//div[@class='datepicker-days']//table[@class=' table-condensed']//thead//tr//th/following-sibling::th[@class='switch']")
 	WebElement dateMonthSwichCalender13;
+	@FindBy(xpath = "//div[@class='datepicker dropdown-menu'][16]//div[@class='datepicker-days']//table[@class=' table-condensed']//thead//tr//th/following-sibling::th[@class='switch']")
+	WebElement dateMonthSwichCalender16;
+	
 	
 	@FindBy(xpath = "//div[@class='datepicker dropdown-menu'][14]//div[@class='datepicker-days']//table[@class=' table-condensed']//thead//tr//th/following-sibling::th[@class='next']")
 	WebElement dateNextCalender14;
 	@FindBy(xpath = "//div[@class='datepicker dropdown-menu'][13]//div[@class='datepicker-days']//table[@class=' table-condensed']//thead//tr//th/following-sibling::th[@class='next']")
 	WebElement dateNextCalender13;
+	@FindBy(xpath = "//div[@class='datepicker dropdown-menu'][13]//div[@class='datepicker-days']//table[@class=' table-condensed']//thead//tr//th/following-sibling::th[@class='next']")
+	WebElement dateNextCalender16;
+	
 	@FindBy(xpath = "//div[@class='datepicker dropdown-menu'][14]//div[@class='datepicker-days']//table[@class=' table-condensed']//tbody/tr/td[contains(@class, 'day ')]")
 	List<WebElement> selectDate14;
 	@FindBy(xpath = "//div[@class='datepicker dropdown-menu'][13]//div[@class='datepicker-days']//table[@class=' table-condensed']//tbody/tr/td[contains(@class, 'day ')]")
 	List<WebElement> selectDate13;
+	@FindBy(xpath = "//div[@class='datepicker dropdown-menu'][13]//div[@class='datepicker-days']//table[@class=' table-condensed']//tbody/tr/td[contains(@class, 'day ')]")
+	List<WebElement> selectDate16;
 	//@FindBy(xpath = "//header//div[contains(@class,'col-lg-3')]")
 	//List<WebElement> contactActivityPanelDate;
 	/*
@@ -159,6 +171,72 @@ public class CRMLeadPage{
 	@FindBy(xpath = "//a[@class='btn btn-ah-green btn-sm dropdown-toggle lead_listing_open_dropdown']")
 	WebElement openDropDown;
 	
+	
+	  @FindBy(xpath =
+	  "//form[@id='send_mail_form']/div/div[2]/div[5]/div[4]/input") WebElement
+	  mailSubject;
+	 
+	
+	
+	  @FindBy(xpath =
+	  "//form[@id='send_mail_form']/div/div[2]/div[5]/div[6]/div/div/iframe")
+	  WebElement mailMessageBody;
+	  
+	  @FindBy(xpath =
+			  "//textarea[@class='form-control sms-required-lead']")
+			  WebElement smsBody;
+	 
+	
+	
+		/*
+		 * @FindBy(xpath =
+		 * "//body[@class='cke_editable cke_editable_themed cke_contents_ltr cke_show_borders']"
+		 * ) WebElement mailMessageBody;
+		 * 
+		 */
+	@FindBy(xpath = "//form[@id='send_mail_form']/div/div[2]/div[5]/p/button")
+	WebElement mailAttachButton;
+	@FindBy(xpath = "//button[@class='btn btn-primary btn-sm m-b-small composeSMSAttachment']")
+	WebElement smsAttachButton;
+	
+	
+	
+	@FindBy(xpath = "//form[@id='send_mail_form']/div/div[2]/div[5]/div[9]/section/div/div[4]/div/div")
+	WebElement mailUploadButton;
+	
+	@FindBy(xpath = "//form[@id='send_mail_form']/div/div[3]/button[2]")
+	WebElement mailSendButton;
+	
+	@FindBy(xpath = "//button[@class='btn btn-info btn-sm']")
+	WebElement smsSendButton;
+	
+	@FindBy(xpath = "//input[@id='smsAddPhoto']/parent::div/span")
+	WebElement smsUploadButton;
+	
+	@FindBy(xpath = "//label[(text()='Type:')]/parent::div/div/div/a/span[1]")
+	WebElement sceduleTypeDropDown;
+	@FindBy(xpath = "//label[(text()='Create Date:')]/parent::div/following-sibling::label/i")
+	WebElement immediatelyCheckBox;
+	@FindBy(xpath = "//label[(text()='Due Date:')]/parent::div/div[2]/button")
+	WebElement dueDate;
+	@FindBy(xpath = "//label[(text()='Due Date:')]/parent::div/div/button")
+	WebElement dueTime;
+	@FindBy(xpath = "//label[(text()='Instructions:')]/parent::div/div/textarea")
+	WebElement instructions;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	String[] stringArray = {"Log Event", "Schedule Event", "Send Email", "Send Text", "Add Notes", "Open in New Window"};
 	 List<String> expListOpenDropDownMenu = new ArrayList<String>();
 	
@@ -169,7 +247,7 @@ public class CRMLeadPage{
 	
 	
 	
-	ConfigFileReader configFileReader;
+	
 	JavascriptExecutor js;
 	
 	
@@ -301,8 +379,57 @@ public class CRMLeadPage{
 					
 					
 				}
+				// schedule task for self immediately 
+				public void scheduleTaskForLead(String eventType,String day, String month,String fromTime, String sendRemainder, String txtEventNotes) throws InterruptedException
+				{
+					OpenEyeIcon.click();
+					Thread.sleep(2000);
+					btnscheduleEvent.click();
+					Thread.sleep(2000);
+					sceduleTypeDropDown.click();
+					driver.findElement(By.xpath("//div[text()='"+eventType+"']")).click();
+					Thread.sleep(2000);
+					immediatelyCheckBox.isSelected();
+					
+					dueDate.click();
+					Thread.sleep(2000);
+					selectCalender.click();
+					
+					while(!dateMonthSwichCalender14.getText().contains(month)) {
+						dateNextCalender14.click();
+					}
+					int countDays = selectDate14.size();
+					for(int i=0;i<countDays;i++)
+					{
+					String getDayname=selectDate14.get(i).getText();
+					if(getDayname.equalsIgnoreCase(day))
+					{
+						selectDate14.get(i).click();
+					break;
+					}
+
+					}
+					dueTime.click();
+					Thread.sleep(2000);
+					driver.findElement(By.xpath("//label[(text()='Due Date:')]/parent::div/div[2]/ul/li/a[text()='"+fromTime+"']")).click();
+					Thread.sleep(2000);
+					driver.findElement(By.xpath("//label[(text()='Send Reminder Email?')]/parent::div/div/label[contains(text(),'"+sendRemainder+"')]")).click();
+												
+					instructions.sendKeys(txtEventNotes);
+					EventScheduleSaveButton.click();					
+					/*
+					 * driver.findElement(By.
+					 * xpath("//div[56]//tr//td[@class='day '][contains(text(),'"+duedate+"')]")).
+					 * click(); btnTaskTime.click(); driver.findElement(By.xpath(
+					 * "//ul[@id='select_immediate_time']//a[@name='tab'][contains(text(),'"+
+					 * fromTime+"')]")).click(); scheduledNotes.sendKeys(txtEventNotes);
+					 * btnEventsSave_Agent.click();
+					 */
+					
+				}
 				
-				public void scheduleTaskForLead(String eventType,String duedate,String fromTime,String txtEventNotes) throws InterruptedException
+				// schedule task for self by selecting future date 
+				public void scheduleTaskForLeadSelectFutureDate(String eventType,String duedate,String fromTime,String txtEventNotes) throws InterruptedException
 				{
 					OpenEyeIcon.click();
 					Thread.sleep(2000);
@@ -324,6 +451,7 @@ public class CRMLeadPage{
 					 */
 					
 				}
+				
 				
 				public void scheduleTaskForOtherAgent(String eventType,String day,String month, String fromTime,String txtEventNotes,String agentName) throws InterruptedException
 				{
@@ -509,7 +637,7 @@ public class CRMLeadPage{
 					
 					}
 				
-				// Method for schedule task validation for lead 
+				// Method for schedule task validation
 				public void sheduledTaskValidation(String task, String date, String time) throws InterruptedException {
 					Thread.sleep(2000);
 					  js = (JavascriptExecutor) driver; 
@@ -537,6 +665,8 @@ public class CRMLeadPage{
 					
 					
 				}
+				
+				
 				
 				public void changeLeadStatus(String leadStatus) {
 					StatusDropDwnButton.click();
@@ -778,32 +908,89 @@ public void LogEventForInbondCall(String logType, String result, String note) th
 	
 }
 
+//log event for task send appliation /thank you note/Lease renewal
+public void LogEventForTask(String logType,String note) throws InterruptedException {
+	OpenEyeIcon.click();
+	Thread.sleep(2000);
+	//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@id='log_contact_button']")));
+	btnLogEvent.click();
+	logTypeDropDown.click();
+	
+	driver.findElement(By.xpath("//div[text()='Task']/following-sibling::ul/li/div[text()='"+logType+"']")).click();
+	Thread.sleep(2000);
+
+	comments.sendKeys(note);
+	btnEventsSave.click();	
+	
+}
+
 //send mail to lead
 
-public void sendMailToLead(String logType, String result, String note) throws InterruptedException {
+public void sendMailToLead(String subject,String messageBody) throws InterruptedException, IOException {
+	Thread.sleep(2000);
 	OpenEyeIcon.click();
 	Thread.sleep(2000);
 	btnSendMail.click();
 	Thread.sleep(2000);
 	//wait.until(ExpectedConditions.visibilityOfElementLocated((By) mailFormHeader));
-	logTypeDropDown.click();
+	mailSubject.sendKeys(subject);
+	Thread.sleep(2000);
+	driver.switchTo().frame(mailMessageBody);
+	WebElement editable = driver.switchTo().activeElement();
+	editable.sendKeys(messageBody);
+	driver.switchTo().defaultContent();
+	Thread.sleep(2000);
+	mailAttachButton.click();
+	Thread.sleep(2000);
+	mailUploadButton.click();
+	Thread.sleep(3000);
+	Runtime.getRuntime().exec("C:\\Users\\akank\\OneDrive\\Documents\\FileUpload.exe");
+	Thread.sleep(2000);
+	mailSendButton.click();
+}
+
+//send SMS to lead
+
+public void sendSmsToLead(String smsText) throws InterruptedException, IOException {
+	configFileReader = new ConfigFileReader();
+	Thread.sleep(2000);
+	OpenEyeIcon.click();
+	Thread.sleep(2000);
+	btnSendSms.click();
+	Thread.sleep(2000);
+	//wait.until(ExpectedConditions.visibilityOfElementLocated((By) mailFormHeader));
 	
-	driver.findElement(By.xpath("//div[text()='Task']/following-sibling::ul/li/div[text()='"+logType+"']")).click();
+	smsBody.sendKeys(smsText);
+	/*
+	 * driver.switchTo().frame(mailMessageBody); WebElement editable =
+	 * driver.switchTo().activeElement(); editable.sendKeys(messageBody);
+	 * driver.switchTo().defaultContent();
+	 */
+	Thread.sleep(2000);
+	smsAttachButton.click();
 	Thread.sleep(2000);
 	
-	resultdropDown.click();
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active']/div/input")).sendKeys(result);
-	Thread.sleep(1000);
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active']/div/input")).sendKeys(Keys.DOWN);
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active']/div/input")).sendKeys(Keys.ENTER);
-	Thread.sleep(1000);
-	//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active']/div/input
-	//driver.findElement(By.xpath("//div[text()='Inbound']/following-sibling::ul/li/div[text()='"+result+"']")).click();
-	//loEvntOtherTitle.sendKeys(title);
-	comments.sendKeys(note);
-	btnEventsSave.click();	
+	Actions actions = new Actions(driver);
+	actions.moveToElement(smsUploadButton).click().perform();
 	
+	
+	/*
+	 * WebDriverWait wait = new WebDriverWait(driver, 20); WebElement upload =
+	 * wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
+	 * "//input[@id='smsAddPhoto']/parent::div/span"))); upload.click();
+	 */
+	/*
+	 * js = (JavascriptExecutor)driver;
+	 * js.executeScript("document.getElementById('gbqfb').click();");
+	 * js.executeScript("arguments[0].click();", smsUploadButton);
+	 */
+
+	Thread.sleep(4000);
+	Runtime.getRuntime().exec(configFileReader.getFilePath());
+	Thread.sleep(2000);
+	smsSendButton.click();
 }
+
 
 public void validateMenu_OpenDropDown(String LeadName) {
 	openDropDown.click();

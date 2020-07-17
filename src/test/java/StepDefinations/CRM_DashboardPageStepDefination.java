@@ -41,11 +41,7 @@ public class CRM_DashboardPageStepDefination{
 	
 
 
-	@Given("^Navigate to \"([^\"]*)\" Site$")
-	public void navigate_to_Site(String url) throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-		
-	}
+	
 
 	@And("^Enter all mandatory details to create new Lead \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\",\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
     public void enter_all_mandatory_details_to_create_new_lead(String EType, String FName, String LName, String phoneNo, String Email,
@@ -62,16 +58,7 @@ public class CRM_DashboardPageStepDefination{
 	
 	
 	
-	@Then("^select lead to create a new lead$")
-	public void select_lead_to_create_a_new_lead() {
-	    // Write code here that turns the phrase above into concrete actions
-	    
-	}
-
-	@And("^Enter all mandatory details to create new Lead$")
-    public void details_to_create_lead_frtname_and_lstname_and_phone_and_property_and_origine()  {
-        
-    }
+	
 	 
 	
 	

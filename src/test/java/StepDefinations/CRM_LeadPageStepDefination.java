@@ -55,14 +55,16 @@ public class CRM_LeadPageStepDefination {
 	
     }
  
- @And("^Schedule task for himself \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
-    public void schedule_task_for_himself(String FName,String LName,String eventType,String duedate,String fromTime,String txtEventNotes) throws Throwable {
+ 
+ 
+ @And("^Schedule task for himself \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
+ public void schedule_task_for_himself(String eventType,String duedate,String fromTime,String txtEventNotes) throws Throwable {
 	
-	 crmLeadPage.leadSearchOpen(FName,LName);
-	 crmLeadPage.scheduleTaskForLead(eventType,duedate,fromTime,txtEventNotes);
+	// crmLeadPage.scheduleTaskForLead(eventType,duedate,fromTime,txtEventNotes);
 	 
 	 
-    }
+ }
+ 
  @And("^Schedule event for himself \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\", \"([^\"]*)\",\"([^\"]*)\"$")
     public void schedule_event_for_himself(String FName,String LName,String eventType,String duedate,String fromTime,String toTime,String txtEventNotes) throws Throwable {
 	
@@ -72,10 +74,10 @@ public class CRM_LeadPageStepDefination {
 	 throw new PendingException();
     }
  
- @And("^Schedule event for other Agent \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\", \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
-    public void schedule_event_for_other_agent(String FName,String LName,String eventType,String duedate,String fromTime,String toTime,String agentName,String txtEventNotes) throws Throwable {
+ @And("^Schedule event for other Agent \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\", \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
+    public void schedule_event_for_other_agent(String eventType,String duedate,String fromTime,String toTime,String agentName,String txtEventNotes) throws Throwable {
 	
-	 crmLeadPage.leadSearchOpen(FName,LName);
+	
 	 crmLeadPage.scheduleEventForLeadOtherAgent(eventType,duedate,fromTime,toTime,agentName,txtEventNotes);
 	
 	
@@ -168,6 +170,27 @@ public class CRM_LeadPageStepDefination {
 	 crmLeadPage.validateMenu_OpenDropDown(LeadName);
  }
  
+ @Then("^Send mail to Lead with \"([^\"]*)\",\"([^\"]*)\" and attachment$")
+ public void send_mail_to_lead_with_attachment(String subject, String messageBody) throws Throwable {
+	 crmLeadPage.sendMailToLead(subject, messageBody);
+ }
+ 
+ 
+ @Then("^Send SMS to Lead with \"([^\"]*)\"and attachment$")
+ public void send_sms_to_lead_with_somethingand_attachment(String messageText) throws Throwable {
+	 crmLeadPage.sendSmsToLead(messageText);
+ }
+ 
+ @Then("^Select task \"([^\"]*)\", \"([^\"]*)\"$")
+ public void select_task(String logType, String note) throws Throwable {
+	 crmLeadPage.LogEventForTask(logType,note);
+ }
+ 
+ //scedule task
+ @Then("^Schedule task for himself \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
+ public void schedule_task_for_himself(String eventType,String day, String month,String fromTime, String sendRemainder, String txtEventNotes) throws Throwable {
+	 crmLeadPage.scheduleTaskForLead(eventType, day, month, fromTime, sendRemainder, txtEventNotes);
+ }
  
 
 }
