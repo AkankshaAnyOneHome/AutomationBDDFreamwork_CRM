@@ -50,8 +50,10 @@ public class Hook{
 	
 	
 	
-	  @After(order = 0) public void AfterSteps() {
-	  testContext.getWebDriverManager().closeDriver(); }
+	/*
+	 * @After(order = 0) public void AfterSteps() {
+	 * testContext.getWebDriverManager().closeDriver(); }
+	 */
 	 
 	 
 	 

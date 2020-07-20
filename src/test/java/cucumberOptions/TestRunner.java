@@ -21,9 +21,11 @@ import dataProviders.ConfigFileReader;
 		    glue= {"StepDefinations"},
 		    dryRun = false,
 		    monochrome = true,
-		    tags = {"@Regression"},
-		   plugin = {"pretty","html:target/cucumber-reports","com.cucumber.listener.ExtentCucumberFormatter:target/cucumber-reports/report_a.json","com.cucumber.listener.ExtentCucumberFormatter:target/cucumber-reports/report.html"}
-		    )
+		    tags = {"@Test"},
+		   plugin = {"com.cucumber.listener.ExtentCucumberFormatter:target/cucumber-reports/report.html"}
+		  
+			
+			)
 	public class TestRunner extends AbstractTestNGCucumberTests  {
 		 
 		
@@ -33,3 +35,4 @@ import dataProviders.ConfigFileReader;
 		 
 
 }
+//"pretty","html:target/cucumber-reports","com.cucumber.listener.ExtentCucumberFormatter:target/cucumber-reports/report_a.json",

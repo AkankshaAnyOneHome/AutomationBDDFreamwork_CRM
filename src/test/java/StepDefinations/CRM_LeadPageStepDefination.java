@@ -57,21 +57,15 @@ public class CRM_LeadPageStepDefination {
  
  
  
- @And("^Schedule task for himself \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
- public void schedule_task_for_himself(String eventType,String duedate,String fromTime,String txtEventNotes) throws Throwable {
-	
-	// crmLeadPage.scheduleTaskForLead(eventType,duedate,fromTime,txtEventNotes);
-	 
-	 
- }
+
  
- @And("^Schedule event for himself \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\", \"([^\"]*)\",\"([^\"]*)\"$")
-    public void schedule_event_for_himself(String FName,String LName,String eventType,String duedate,String fromTime,String toTime,String txtEventNotes) throws Throwable {
+ @Then("^Schedule event for Lead \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
+    public void schedule_event_for_himself(String eventType,String day,String month,String fromTime,String toTime,String txtEventNotes) throws Throwable {
 	
-	 crmLeadPage.leadSearchOpen(FName,LName);
-	 crmLeadPage.scheduleEventForLead(eventType,duedate,fromTime,toTime,txtEventNotes);
-	 crmLeadPage.scheduleEventValidation(eventType,duedate,fromTime,FName);
-	 throw new PendingException();
+	
+	 crmLeadPage.scheduleEventForLead(eventType,day,month,fromTime,toTime,txtEventNotes);
+	 
+	
     }
  
  @And("^Schedule event for other Agent \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\", \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
@@ -89,7 +83,7 @@ public class CRM_LeadPageStepDefination {
     public void schedule_event_for_himself_Multiple(String FName,String LName,String eventType,String duedate,String fromTime,String toTime,String txtEventNotes) throws Throwable {
 	
 	 crmLeadPage.leadSearchOpen(FName,LName);
-	 crmLeadPage.scheduleEventForLead(eventType,duedate,fromTime,toTime,txtEventNotes);
+	 crmLeadPage.scheduleEventForLead(eventType,duedate,fromTime,toTime,txtEventNotes, txtEventNotes);
 	
 	 
     }
@@ -187,10 +181,22 @@ public class CRM_LeadPageStepDefination {
  }
  
  //scedule task
- @Then("^Schedule task for himself \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
+ @Then("^Schedule task immediately for himself \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
  public void schedule_task_for_himself(String eventType,String day, String month,String fromTime, String sendRemainder, String txtEventNotes) throws Throwable {
 	 crmLeadPage.scheduleTaskForLead(eventType, day, month, fromTime, sendRemainder, txtEventNotes);
  }
  
+ 
+//schedule task for other 
+@Then("^Schedule other task immediately for himself \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
+public void schedule_task_for_himself_other(String eventType,String other, String day, String month,String fromTime, String sendRemainder, String txtEventNotes) throws Throwable {
+	 crmLeadPage.scheduleTaskForLead_other(eventType,other, day, month, fromTime, sendRemainder, txtEventNotes);
+}
+
+//schedule Event for other 
+@Then("^Schedule other event for himself \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
+public void schedule_event_for_himself_other(String eventType,String other, String day, String month,String fromTime, String ToTime,String txtEventNotes) throws Throwable {
+	 crmLeadPage.scheduleEventForLead_other(eventType,other, day, month, fromTime, ToTime, txtEventNotes);
+}
 
 }

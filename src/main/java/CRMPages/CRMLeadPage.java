@@ -51,6 +51,10 @@ public class CRMLeadPage{
 	WebElement btnEventFromTime;
 	@FindBy(xpath = "//div[@class='col-xs-8']//button[@id='to_time']")
 	WebElement btnEventToTime;
+	@FindBy(xpath = "//label[text()='Time:']/following-sibling::div/div[1]/button")
+	WebElement btnEventFromTimeSceduleEvent;
+	@FindBy(xpath = "//label[text()='Time:']/following-sibling::div/div[2]/button")
+	WebElement btnEventToTimeSceduleEvent;
 	@FindBy(xpath = "//textarea[@id='schedule_notes']")
 	WebElement scheduledNotes;
 	@FindBy(xpath = "//button[@class='btn btn-info btn-xs add_log_event_leadview']")
@@ -61,10 +65,13 @@ public class CRMLeadPage{
 	WebElement btnLeadStatus;
 	@FindBy(xpath = "//table[@id='StretchGrid']//tbody//td[4]")
 	WebElement actualleadStatus;
-	
+	@FindBy(xpath = "//label[text()='Title:']/parent::div[@class='form-group m-t']//div/input")
+	WebElement scheduleEventTaskOther;
 	
 	@FindBy(xpath = "//div[@id='c-slide']//p[contains(@class,'h4 text-center next-silder-title')]")
 	List<WebElement> SchedulesListing;
+	
+	
 	@FindBy(xpath = "//div[@id='s2id_selected_prop_agent_id']//input")
 	WebElement txtScheduleAgentName;
 	@FindBy(xpath = "//div//span[@class='select2-match']")
@@ -99,6 +106,17 @@ public class CRMLeadPage{
 	WebElement dateMonthSwichCalender13;
 	@FindBy(xpath = "//div[@class='datepicker dropdown-menu'][16]//div[@class='datepicker-days']//table[@class=' table-condensed']//thead//tr//th/following-sibling::th[@class='switch']")
 	WebElement dateMonthSwichCalender16;
+	@FindBy(xpath = "//span[@class='fc-header-title']")
+	WebElement monthCalenderSceduleEvent;
+	@FindBy(xpath = "//label[@class='radio-custom ']")
+	WebElement timeRadioButton;
+	
+	@FindBy(xpath = "//div[@class='event-calendar-se block col-xs-12 pull-left event_calendar_position fc fc-ltr']//table//tbody//tr//td[@class='fc-header-left']//span[contains(@class,'fc-corner-right')]//span[@class='fc-text-arrow']")
+	WebElement clickNext;
+	@FindBy(xpath = "//th[contains(@class,'fc-day-header')]")
+	List<WebElement> scheduleWeek;
+	@FindBy(xpath = "//span[@class='fc-event-title']")
+	WebElement availableDates;
 	
 	
 	@FindBy(xpath = "//div[@class='datepicker dropdown-menu'][14]//div[@class='datepicker-days']//table[@class=' table-condensed']//thead//tr//th/following-sibling::th[@class='next']")
@@ -135,9 +153,11 @@ public class CRMLeadPage{
 	@FindBy(xpath = "//label[text()='Property: ']/parent::td//following-sibling::td/div/a")
 	WebElement propertyDropDown;
 	
+	@FindBy(xpath = "//label[text()='FloorPlan:']/parent::div/div/div/a")
+	WebElement floorPlanDropDown;
 	@FindBy(xpath = "//label[text()='Type : ']/parent::td//following-sibling::td/div/div/a")
 	WebElement logTypeDropDown;
-	@FindBy(xpath = "//label[text()='Source Type: ']/parent::td//following-sibling::td/div/a")
+	@FindBy(xpath = "//label[text()='Source Type:']/following-sibling::div/div/a")
 	WebElement sourceTypeDropDown;
 	@FindBy(xpath = "//label[text()='Date: ']/parent::td//following-sibling::td/input")
 	WebElement dateSelect;
@@ -145,6 +165,9 @@ public class CRMLeadPage{
 	WebElement fromTimeDropDown;
 	@FindBy(xpath = "//label[text()='Time: ']/parent::td//following-sibling::td/div[2]/button[@class='btn btn-white btn-sm dropdown-toggle']/span[@class='dropdown-label']")
 	WebElement toTimeDropDown;
+	@FindBy(xpath = "//label[text()='Time:']/following-sibling::div/div[2]/button[@class='btn btn-white btn-sm dropdown-toggle']/span[@class='dropdown-label end_time_span_id_schedule_event']")
+	WebElement toTimeDropDownSceduleEvent;
+	
 	@FindBy(xpath = "//label[text()='Unit Shown: ']/parent::td//following-sibling::td/div/div")
 	WebElement unitShown;
 	@FindBy(xpath = "//label[text()='Showing Result: ']/parent::td//following-sibling::td/div/button")
@@ -217,9 +240,12 @@ public class CRMLeadPage{
 	WebElement sceduleTypeDropDown;
 	@FindBy(xpath = "//label[(text()='Create Date:')]/parent::div/following-sibling::label/i")
 	WebElement immediatelyCheckBox;
-	@FindBy(xpath = "//label[(text()='Due Date:')]/parent::div/div[2]/button")
+	@FindBy(xpath = "//label[(text()='Due Date:')]/parent::div/div[1]/input")
 	WebElement dueDate;
-	@FindBy(xpath = "//label[(text()='Due Date:')]/parent::div/div/button")
+	@FindBy(xpath = "//label[(text()='Due Date:')]/following-sibling::div[1]/input")
+	WebElement dueDatesgheduleEvent;
+	
+	@FindBy(xpath = "//div[@class='form-group m-t-large from_to_dropdown_tr required-field']/label[text()='Time:']/following-sibling::div/div[1]/button")
 	WebElement dueTime;
 	@FindBy(xpath = "//label[(text()='Instructions:')]/parent::div/div/textarea")
 	WebElement instructions;
@@ -275,26 +301,47 @@ public class CRMLeadPage{
 		}
 		
 		// Method for schedule event for lead 
-				public void scheduleEventForLead(String eventType,String duedate,String fromTime,String toTime,String txtEventNotes) throws InterruptedException
+				public void scheduleEventForLead(String eventType,String day,String month,String fromTime,String toTime,String txtEventNotes) throws InterruptedException
 				{
 					OpenEyeIcon.click();
-					Thread.sleep(2000);					
+					Thread.sleep(2000);		
 					btnscheduleEvent.click();
+					Thread.sleep(2000);	
+					sceduleTypeDropDown.click();
+					driver.findElement(By.xpath("//div[text()='"+eventType+"']")).click();
 					Thread.sleep(2000);
-					driver.findElement(By.xpath("//div[@id='s2id_sel_schedule_type']//input")).sendKeys(eventType);
-					Thread.sleep(1000);
-					driver.findElement(By.xpath("//span[contains(text(),'"+eventType+"')]")).click();				
-					EventScheduleSaveButton.click();					
-					/*
-					 * driver.findElement(By.
-					 * xpath("//div[56]//tr//td[@class='day '][contains(text(),'"+duedate+"')]")).
-					 * click(); btnEventFromTime.click(); driver.findElement(By.
-					 * xpath("//ul[@class='dropdown-menu select_from_schedule_event']//a[@name='tab'][contains(text(),'"
-					 * +fromTime+"')]")).click(); btnEventToTime.click(); driver.findElement(By.
-					 * xpath("//ul[@class='dropdown-menu select_to_schedule_event']//a[@name='tab'][contains(text(),'"
-					 * +toTime+"')]")).click(); scheduledNotes.sendKeys(txtEventNotes);
-					 * btnEventsSave.click();
-					 */
+					selectCalender.click();
+					Thread.sleep(2000);
+					while(!dateMonthSwichCalender14.getText().contains(month)) {
+						dateNextCalender14.click();
+					}
+					int countDays = selectDate14.size();
+					for(int i=0;i<countDays;i++)
+					{
+					String getDayname=selectDate14.get(i).getText();
+					if(getDayname.equalsIgnoreCase(day))
+					{
+						selectDate14.get(i).click();
+					break;
+					}
+
+					}
+					Thread.sleep(2000);
+					btnEventFromTimeSceduleEvent.click();
+					Thread.sleep(2000);
+					driver.findElement(By.xpath("//label[text()='Time:']/following-sibling::div/div[1]/ul/li/a[text()='"+fromTime+"']")).click();
+					Thread.sleep(2000);
+					btnEventToTimeSceduleEvent.click();
+					Thread.sleep(2000);
+					driver.findElement(By.xpath("//label[text()='Time:']/following-sibling::div/div[2]/ul/li/a[text()='"+toTime+"']")).click();
+					Thread.sleep(2000);				
+					scheduledNotes.sendKeys(txtEventNotes);
+					EventScheduleSaveButton.click();		
+					
+					
+					
+					
+					
 					
 					
 					
@@ -456,6 +503,7 @@ public class CRMLeadPage{
 				public void scheduleTaskForOtherAgent(String eventType,String day,String month, String fromTime,String txtEventNotes,String agentName) throws InterruptedException
 				{
 					CRMLeadPage crmLeadPage = new CRMLeadPage(driver);
+					Thread.sleep(2000);
 					OpenEyeIcon.click();
 					Thread.sleep(2000);
 										
@@ -714,7 +762,7 @@ public class CRMLeadPage{
 					}
 
 					}
-					
+					Thread.sleep(2000);
 					fromTimeDropDown.click();
 					//driver.findElement(By.xpath("//label[text()='Time: ']/parent::td//following-sibling::td/div/button/span[@text='"+fromTime+"']")).click();
 					
@@ -763,7 +811,7 @@ public class CRMLeadPage{
 					}
 
 					}
-					
+					Thread.sleep(2000);
 					fromTimeDropDown.click();
 					//driver.findElement(By.xpath("//label[text()='Time: ']/parent::td//following-sibling::td/div/button/span[@text='"+fromTime+"']")).click();
 					
@@ -801,7 +849,7 @@ public class CRMLeadPage{
 					}
 
 					}
-					
+					Thread.sleep(2000);
 					fromTimeDropDown.click();
 					//driver.findElement(By.xpath("//label[text()='Time: ']/parent::td//following-sibling::td/div/button/span[@text='"+fromTime+"']")).click();
 					
@@ -816,7 +864,8 @@ public class CRMLeadPage{
 				}
 				//log event for other task
 public void LogEventForOtherTask(String logType, String title, String note) throws InterruptedException {
-					
+	                OpenEyeIcon.click();
+	                Thread.sleep(2000);
 					btnLogEvent.click();
 					logTypeDropDown.click();
 					//Thread.sleep(2000);
@@ -1006,6 +1055,172 @@ public void validateMenu_OpenDropDown(String LeadName) {
 			
 }
 				Assert.assertEquals(actListOpenDropDownMenu, expListOpenDropDownMenu);
-}}
+}
+//Schedule task for other Immediately
+public void scheduleTaskForLead_other(String eventType, String other, String day, String month, String fromTime,
+		String sendRemainder, String txtEventNotes) throws InterruptedException {
+	
+	OpenEyeIcon.click();
+	Thread.sleep(2000);
+	btnscheduleEvent.click();
+	Thread.sleep(2000);
+	sceduleTypeDropDown.click();
+	driver.findElement(By.xpath("//div[text()='"+eventType+"']")).click();
+	Thread.sleep(2000);
+	scheduleEventTaskOther.sendKeys(other);
+	
+	
+	Thread.sleep(2000);
+	immediatelyCheckBox.isSelected();
+	Thread.sleep(2000);
+	dueDate.click();
+	Thread.sleep(2000);
+	selectCalender.click();
+	Thread.sleep(2000);
+	while(!dateMonthSwichCalender14.getText().contains(month)) {
+		Thread.sleep(2000);
+		dateNextCalender14.click();
+	}
+	int countDays = selectDate14.size();
+	for(int i=0;i<countDays;i++)
+	{
+	String getDayname=selectDate14.get(i).getText();
+	if(getDayname.equalsIgnoreCase(day))
+	{
+		selectDate14.get(i).click();
+	break;
+	}
+
+	}
+	dueTime.click();
+	Thread.sleep(2000);
+	driver.findElement(By.xpath("//label[(text()='Due Date:')]/parent::div/div[2]/ul/li/a[text()='"+fromTime+"']")).click();
+	Thread.sleep(2000);
+	dueTime.click();
+	Thread.sleep(2000);
+	
+	driver.findElement(By.xpath("//label[(text()='Send Reminder Email?')]/parent::div/div/label[contains(text(),'"+sendRemainder+"')]")).click();
+								
+	instructions.sendKeys(txtEventNotes);
+	EventScheduleSaveButton.click();			
+	
+	
+}
+//Schedule event for other 
+public void scheduleEventForLead_other(String eventType, String other, String day, String month, String fromTime,
+		String toTime, String txtEventNotes) throws InterruptedException {
+	
+	OpenEyeIcon.click();
+	Thread.sleep(2000);
+	btnscheduleEvent.click();
+	Thread.sleep(2000);
+	sceduleTypeDropDown.click();
+	driver.findElement(By.xpath("//div[text()='"+eventType+"']")).click();
+	Thread.sleep(2000);
+	scheduleEventTaskOther.sendKeys(other);
+	//immediatelyCheckBox.isSelected();
+	
+	//dueDatesgheduleEvent.click();
+	
+	selectCalender.click();
+	Thread.sleep(2000);
+	while(!dateMonthSwichCalender14.getText().contains(month)) {
+		dateNextCalender14.click();
+	}
+	int countDays = selectDate14.size();
+	for(int i=0;i<countDays;i++)
+	{
+	String getDayname=selectDate14.get(i).getText();
+	if(getDayname.equalsIgnoreCase(day))
+	{
+		selectDate14.get(i).click();
+	break;
+	}
+
+	}
+	Thread.sleep(2000);
+	btnEventFromTimeSceduleEvent.click();
+	Thread.sleep(2000);
+	driver.findElement(By.xpath("//label[text()='Time:']/following-sibling::div/div[1]/ul/li/a[text()='"+fromTime+"']")).click();
+	Thread.sleep(2000);
+	btnEventToTimeSceduleEvent.click();
+	Thread.sleep(2000);
+	driver.findElement(By.xpath("//label[text()='Time:']/following-sibling::div/div[2]/ul/li/a[text()='"+toTime+"']")).click();
+	Thread.sleep(2000);				
+	scheduledNotes.sendKeys(txtEventNotes);
+	EventScheduleSaveButton.click();			
+	
+	
+}
+
+//Schedule event for showing
+public void scheduleEventForShowing(String logType, String Property, String SourceType,String FloorPlan, String month, String week, String unit, String showingResult, String note) throws InterruptedException {
+
+	OpenEyeIcon.click();
+	Thread.sleep(2000);
+	btnscheduleEvent.click();
+	Thread.sleep(2000);
+	sceduleTypeDropDown.click();
+	driver.findElement(By.xpath("//div[text()='"+logType+"']")).click();
+	propertyDropDown.click();
+	Thread.sleep(2000);
+	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][1]/div/input")).sendKeys(Property);
+	Thread.sleep(1000);
+	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][1]/div/input")).sendKeys(Keys.DOWN);
+	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][1]/div/input")).sendKeys(Keys.ENTER);
+	Thread.sleep(1000);
+	floorPlanDropDown.click();
+	Thread.sleep(2000);
+	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][2]/div/input")).sendKeys(FloorPlan);
+	Thread.sleep(1000);
+	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][2]/div/input")).sendKeys(Keys.DOWN);
+	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][2]/div/input")).sendKeys(Keys.ENTER);
+	Thread.sleep(1000);
+	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][3]/div/input")).sendKeys(unit);
+	Thread.sleep(1000);
+	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][3]/div/input")).sendKeys(Keys.DOWN);
+	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][3]/div/input")).sendKeys(Keys.ENTER);
+	Thread.sleep(1000);
+	
+	
+	
+	sourceTypeDropDown.click();
+	Thread.sleep(2000);
+	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][3]/div/input")).sendKeys(SourceType);
+	Thread.sleep(1000);
+	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][3]/div/input")).sendKeys(Keys.DOWN);
+	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][3]/div/input")).sendKeys(Keys.ENTER);
+	Thread.sleep(1000);
+	
+
+	while(!monthCalenderSceduleEvent.getText().contains(month)) {
+		clickNext.click();
+	}
+	int countWeek = scheduleWeek.size();
+	for(int i=0;i<countWeek;i++)
+	{
+	String getWeekname=scheduleWeek.get(i).getText();
+	if(getWeekname.equalsIgnoreCase(week))
+	{
+		availableDates.click();
+		Thread.sleep(2000);
+		timeRadioButton.click();
+		
+	break;
+	}
+
+	}
+	
+	
+	Thread.sleep(2000);
+	
+	notes.sendKeys(note);
+	btnEventsSave.click();
+	
+	
+	
+}
+
+}
 
 

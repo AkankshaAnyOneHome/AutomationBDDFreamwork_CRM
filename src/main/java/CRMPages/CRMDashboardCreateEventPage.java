@@ -229,6 +229,7 @@ public class CRMDashboardCreateEventPage {
 			throws InterruptedException, IOException {
 
 		EventTypeVal.sendKeys(EType + Keys.ENTER);	
+		Thread.sleep(2000);
 		createTxtFirstName.sendKeys(FName);
 		Thread.sleep(1000);
 		createTxtLastName.sendKeys(LName);
