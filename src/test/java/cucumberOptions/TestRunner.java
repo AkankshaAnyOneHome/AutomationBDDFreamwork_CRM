@@ -21,7 +21,7 @@ import dataProviders.ConfigFileReader;
 		    glue= {"StepDefinations"},
 		    dryRun = false,
 		    monochrome = true,
-		    tags = {"@Test"},
+		    tags = {"@Regression"},
 		   plugin = {"com.cucumber.listener.ExtentCucumberFormatter:target/cucumber-reports/report.html"}
 		  
 			
