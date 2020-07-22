@@ -129,5 +129,5 @@ Scenario: Agent Schedule event move in for other Agent
 Given Initialize the browser with "Chrome" and Navigate to Login page
 When login to application using "g0gyrozeppeli@ymail.com" and "@123"
 And click on Lead menu and search for "Blanche","Candelario" lead with "Inquiry" 
-And Schedule event for other Agent "Move-In","20","12:30 p.m.", "2:00 p.m.","Andre","Move -In Event" fghfghfgh fhfghfgh
+And Schedule event for other Agent "Move-In","20","12:30 p.m.", "2:00 p.m.","Andre","Move -In Event"
 
