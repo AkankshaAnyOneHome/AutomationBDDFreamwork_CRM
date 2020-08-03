@@ -1,5 +1,0 @@
-2020-07-03 18:38:34 INFO  LoggerHelper:74 - Chrome browser launched successfully
-2020-07-03 18:38:41 INFO  LoggerHelper:103 - URL http://stage-showpro.herokuapp.com/signin entered successfully
-2020-07-03 18:38:49 INFO  LoggerHelper:67 - Login to application Sucessfully
-2020-07-03 18:39:20 INFO  LoggerHelper:279 - Created new Lead sucessfully
-2020-07-03 18:39:37 INFO  TestBase:395 - Test Pass-Lead Sucessfully Created With Status As Inquiry

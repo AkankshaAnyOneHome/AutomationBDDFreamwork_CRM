@@ -1,5 +1,10 @@
 package CRMPages;
 
+import static org.testng.Assert.assertEquals;
+
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -18,12 +24,15 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.Keys;
 
 import com.google.inject.Key;
 
@@ -57,7 +66,7 @@ public class CRMLeadPage{
 	WebElement btnEventToTimeSceduleEvent;
 	@FindBy(xpath = "//textarea[@id='schedule_notes']")
 	WebElement scheduledNotes;
-	@FindBy(xpath = "//button[@class='btn btn-info btn-xs add_log_event_leadview']")
+	@FindBy(css = "button#save_schedule_contact.btn.btn-info.btn-xs.save_schedule_contact_btn")
 	WebElement btnEventsSave;
 	@FindBy(xpath = "//button[@id='save_schedule_contact']")
 	WebElement btnEventsSave_Agent;
@@ -93,7 +102,7 @@ public class CRMLeadPage{
 	@FindBy(xpath = "//table[@id='StretchGrid']//tbody//td[2]")
 	List<WebElement> leadTableText;
 	@FindBy(xpath = "//li[@id='leads']")
-	WebElement menuButton_Lead;
+	public WebElement menuButton_Lead;
 	@FindBy(xpath = "//div[@class='pull-left thumb-small']")
 	List<WebElement> contactActivityExpand;
 	@FindBy(xpath = "//li[@id='leads']")
@@ -116,7 +125,9 @@ public class CRMLeadPage{
 	@FindBy(xpath = "//th[contains(@class,'fc-day-header')]")
 	List<WebElement> scheduleWeek;
 	@FindBy(xpath = "//span[@class='fc-event-title']")
-	WebElement availableDates;
+	List<WebElement> availableDates;
+	@FindBy(xpath = "//label[@class='radio-custom ']")
+	WebElement availableTimeRadio;
 	
 	
 	@FindBy(xpath = "//div[@class='datepicker dropdown-menu'][14]//div[@class='datepicker-days']//table[@class=' table-condensed']//thead//tr//th/following-sibling::th[@class='next']")
@@ -150,15 +161,20 @@ public class CRMLeadPage{
 	WebElement selectEventName;
 
 	
-	@FindBy(xpath = "//label[text()='Property: ']/parent::td//following-sibling::td/div/a")
+	@FindBy(xpath = "//label[contains(text(),'Property')]/following-sibling::div/div/a")
 	WebElement propertyDropDown;
 	
 	@FindBy(xpath = "//label[text()='FloorPlan:']/parent::div/div/div/a")
 	WebElement floorPlanDropDown;
+	@FindBy(xpath = "//label[text()='Unit:']/parent::div/div/div/a")
+	WebElement unitDropDown;
+	
 	@FindBy(xpath = "//label[text()='Type : ']/parent::td//following-sibling::td/div/div/a")
 	WebElement logTypeDropDown;
 	@FindBy(xpath = "//label[text()='Source Type:']/following-sibling::div/div/a")
 	WebElement sourceTypeDropDown;
+	@FindBy(xpath = "//label[text()='Origin:']/following-sibling::div/div/a")
+	WebElement originTypeDropDown;
 	@FindBy(xpath = "//label[text()='Date: ']/parent::td//following-sibling::td/input")
 	WebElement dateSelect;
 	@FindBy(xpath = "//label[text()='Time: ']/parent::td//following-sibling::td/div[1]/button[@class='btn btn-white btn-sm dropdown-toggle']/span[@class='dropdown-label']")
@@ -172,7 +188,7 @@ public class CRMLeadPage{
 	WebElement unitShown;
 	@FindBy(xpath = "//label[text()='Showing Result: ']/parent::td//following-sibling::td/div/button")
 	WebElement showing_Result;
-	@FindBy(xpath = "//label[text()='Notes: ']/parent::td//following-sibling::td/textarea")
+	@FindBy(css = "textarea#schedule_notes.form-control")
 	WebElement notes;
 	@FindBy(xpath = "//label[text()='Title:']/parent::td//following-sibling::td/input")
 	WebElement loEvntOtherTitle;
@@ -208,8 +224,17 @@ public class CRMLeadPage{
 	  @FindBy(xpath =
 			  "//textarea[@class='form-control sms-required-lead']")
 			  WebElement smsBody;
-	 
+	  @FindBy(xpath = "//a[@id='advancedFilterMyLeads']")
+	public
+		WebElement showfilterOption;
+	  
+	  @FindBy(xpath = "//div[@id='my_lead_download']/a")
+		public WebElement printButton;
+	  
+	  @FindBy(xpath="//a[@id='add_coapplicant_button']")
+		WebElement addButton;
 	
+	  
 	
 		/*
 		 * @FindBy(xpath =
@@ -249,13 +274,30 @@ public class CRMLeadPage{
 	WebElement dueTime;
 	@FindBy(xpath = "//label[(text()='Instructions:')]/parent::div/div/textarea")
 	WebElement instructions;
+	@FindBy(id = "additional_Property_button")
+	WebElement addButtonToAddPropertyInterest;
+	@FindBy(id = "add_notes_button")
+	WebElement addButtonToAddNote;
+	@FindBy(id = "save_add_notes")
+	WebElement saveButtonToAddNote;
 	
 	
 	
+	@FindBy(xpath = "//a[@class='btn btn-white btn-xs uploadDocumentButton']")
+	WebElement addDocumentButton;
+
 	
+	@FindBy(xpath = "//input[@class='btn btn-sm btn-info m-b-small selected_doc']")
+	WebElement chooseDocument;
+	@FindBy(xpath = "//button[@class='btn-info text-center upload_doc btn']")
+	WebElement uploadDocument;
 	
-	
-	
+	@FindBy(css= "cr-button.cancel-button")
+	WebElement cancelPrint;
+	@FindBy(xpath= "//button[contains(text(),'Download Leads')]")
+	WebElement downloadButton;
+	@FindBy(xpath= "//a[@id='send_quote_button']")
+	WebElement creatQuote;
 	
 	
 	
@@ -275,6 +317,7 @@ public class CRMLeadPage{
 	
 	
 	JavascriptExecutor js;
+	Robot robot;
 	
 	
 	
@@ -1154,8 +1197,7 @@ public void scheduleEventForLead_other(String eventType, String other, String da
 }
 
 //Schedule event for showing
-public void scheduleEventForShowing(String logType, String Property, String SourceType,String FloorPlan, String month, String week, String unit, String showingResult, String note) throws InterruptedException {
-
+public void scheduleEventForShowing(String logType, String Property, String FloorPlan,String unit, String SourceType,String origin,String month, String week, String date, String note) throws InterruptedException {
 	OpenEyeIcon.click();
 	Thread.sleep(2000);
 	btnscheduleEvent.click();
@@ -1163,36 +1205,61 @@ public void scheduleEventForShowing(String logType, String Property, String Sour
 	sceduleTypeDropDown.click();
 	driver.findElement(By.xpath("//div[text()='"+logType+"']")).click();
 	propertyDropDown.click();
-	Thread.sleep(2000);
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][1]/div/input")).sendKeys(Property);
+	//WebDriverWait wait = new WebDriverWait(driver,configFileReader.getImplicitlyWait());
+	//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][1]/div/input")));
+	
+	Thread.sleep(3000);
+	driver.findElement(By.cssSelector("input#s2id_autogen36_search.select2-input")).sendKeys(Property);
 	Thread.sleep(1000);
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][1]/div/input")).sendKeys(Keys.DOWN);
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][1]/div/input")).sendKeys(Keys.ENTER);
+	driver.findElement(By.cssSelector("input#s2id_autogen36_search.select2-input")).sendKeys(Keys.DOWN);
+	driver.findElement(By.cssSelector("input#s2id_autogen36_search.select2-input")).sendKeys(Keys.ENTER);
 	Thread.sleep(1000);
+
+	
 	floorPlanDropDown.click();
-	Thread.sleep(2000);
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][2]/div/input")).sendKeys(FloorPlan);
+	/*
+	 * Actions builder = new Actions(driver); Action seriesOfActions = builder
+	 * .moveToElement(floorPlanDropDown) .click() .sendKeys(floorPlanDropDown,
+	 * FloorPlan) .keyDown(floorPlanDropDown, Keys.DOWN) .sendKeys(Keys.ENTER)
+	 * .build(); seriesOfActions.perform();
+	 */
+	Thread.sleep(3000);
+	driver.findElement(By.cssSelector("input#s2id_autogen57_search.select2-input")).sendKeys(FloorPlan);
 	Thread.sleep(1000);
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][2]/div/input")).sendKeys(Keys.DOWN);
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][2]/div/input")).sendKeys(Keys.ENTER);
-	Thread.sleep(1000);
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][3]/div/input")).sendKeys(unit);
-	Thread.sleep(1000);
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][3]/div/input")).sendKeys(Keys.DOWN);
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][3]/div/input")).sendKeys(Keys.ENTER);
+	driver.findElement(By.cssSelector("input#s2id_autogen57_search.select2-input")).sendKeys(Keys.DOWN);
+	driver.findElement(By.cssSelector("input#s2id_autogen57_search.select2-input")).sendKeys(Keys.ENTER);
 	Thread.sleep(1000);
 	
+	unitDropDown.click();
+	Thread.sleep(3000);
+	driver.findElement(By.cssSelector("input#s2id_autogen58_search.select2-input")).sendKeys(unit);
+	Thread.sleep(1000);
+	driver.findElement(By.cssSelector("input#s2id_autogen58_search.select2-input")).sendKeys(Keys.DOWN);
+	driver.findElement(By.cssSelector("input#s2id_autogen58_search.select2-input")).sendKeys(Keys.ENTER);
+	Thread.sleep(1000);
 	
+	if(sourceTypeDropDown.isDisplayed()) {
 	
 	sourceTypeDropDown.click();
-	Thread.sleep(2000);
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][3]/div/input")).sendKeys(SourceType);
+	Thread.sleep(3000);
+	driver.findElement(By.cssSelector("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][4]/div/input")).sendKeys(SourceType);
 	Thread.sleep(1000);
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][3]/div/input")).sendKeys(Keys.DOWN);
-	driver.findElement(By.xpath("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][3]/div/input")).sendKeys(Keys.ENTER);
-	Thread.sleep(1000);
+	driver.findElement(By.cssSelector("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][4]/div/input")).sendKeys(Keys.DOWN);
+	driver.findElement(By.cssSelector("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][4]/div/input")).sendKeys(Keys.ENTER);
+	Thread.sleep(1000);}
 	
-
+	if(originTypeDropDown.isDisplayed()) {
+	
+	originTypeDropDown.click();
+	Thread.sleep(3000);
+	driver.findElement(By.cssSelector("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][5]/div/input")).sendKeys(origin);
+	Thread.sleep(1000);
+	driver.findElement(By.cssSelector("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][5]/div/input")).sendKeys(Keys.DOWN);
+	driver.findElement(By.cssSelector("//div[@class='select2-drop select2-display-none select2-with-searchbox select2-drop-active'][5]/div/input")).sendKeys(Keys.ENTER);
+	Thread.sleep(1000);
+	}
+	
+	
 	while(!monthCalenderSceduleEvent.getText().contains(month)) {
 		clickNext.click();
 	}
@@ -1200,13 +1267,22 @@ public void scheduleEventForShowing(String logType, String Property, String Sour
 	for(int i=0;i<countWeek;i++)
 	{
 	String getWeekname=scheduleWeek.get(i).getText();
-	if(getWeekname.equalsIgnoreCase(week))
+	if(getWeekname.contains(week))
 	{
-		availableDates.click();
-		Thread.sleep(2000);
-		timeRadioButton.click();
+    driver.findElement(By.xpath("//div[contains(@data-event-date,'"+date+"')]")).click();
+    availableTimeRadio.click();
+    String time=availableTimeRadio.getText();
+	  
+	 // int getAvailableDate = availableDates.size(); 
+	 // for(int j=0;j<getAvailableDate;j++)
+	/*
+	 * { String getAvailableDatesName=availableDates.get(j).getText();
+	 * if(!getAvailableDatesName.contains("0 Available")) {
+	 * availableDates.get(j).click();
+	 * 
+	 * } }
+	 */
 		
-	break;
 	}
 
 	}
@@ -1220,6 +1296,138 @@ public void scheduleEventForShowing(String logType, String Property, String Sour
 	
 	
 }
+
+//add property of interet
+public void addPropertyOfInterest(String Property, String FloorPlan,String unit,String origin,String note) throws InterruptedException {
+	OpenEyeIcon.click();
+	Thread.sleep(2000);
+	addButtonToAddPropertyInterest.click();
+	Thread.sleep(1000);
+	
+	propertyDropDown.click();
+	Thread.sleep(1000);
+	driver.findElement(By.cssSelector("input#s2id_autogen36_search.select2-input")).sendKeys(Property);
+	Thread.sleep(1000);
+	driver.findElement(By.cssSelector("input#s2id_autogen36_search.select2-input")).sendKeys(Keys.DOWN);
+	driver.findElement(By.cssSelector("input#s2id_autogen36_search.select2-input")).sendKeys(Keys.ENTER);
+	Thread.sleep(1000);
+
+	
+	floorPlanDropDown.click();
+	/*
+	 * Actions builder = new Actions(driver); Action seriesOfActions = builder
+	 * .moveToElement(floorPlanDropDown) .click() .sendKeys(floorPlanDropDown,
+	 * FloorPlan) .keyDown(floorPlanDropDown, Keys.DOWN) .sendKeys(Keys.ENTER)
+	 * .build(); seriesOfActions.perform();
+	 */
+	Thread.sleep(3000);
+	driver.findElement(By.cssSelector("input#s2id_autogen57_search.select2-input")).sendKeys(FloorPlan);
+	Thread.sleep(1000);
+	driver.findElement(By.cssSelector("input#s2id_autogen57_search.select2-input")).sendKeys(Keys.DOWN);
+	driver.findElement(By.cssSelector("input#s2id_autogen57_search.select2-input")).sendKeys(Keys.ENTER);
+	Thread.sleep(1000);
+	
+	unitDropDown.click();
+	Thread.sleep(3000);
+	driver.findElement(By.cssSelector("input#s2id_autogen58_search.select2-input")).sendKeys(unit);
+	Thread.sleep(1000);
+	driver.findElement(By.cssSelector("input#s2id_autogen58_search.select2-input")).sendKeys(Keys.DOWN);
+	driver.findElement(By.cssSelector("input#s2id_autogen58_search.select2-input")).sendKeys(Keys.ENTER);
+	Thread.sleep(1000);
+	
+	
+	Thread.sleep(2000);
+	
+	notes.sendKeys(note);
+	btnEventsSave.click();
+	
+	
+	
+}
+
+//add notes
+public void addNotes(String note) throws InterruptedException {
+	OpenEyeIcon.click();
+	Thread.sleep(2000);
+	addButtonToAddNote.click();
+	//notes
+	saveButtonToAddNote.click();
+}
+
+//add notes
+public void addDocument() throws InterruptedException, IOException {
+	OpenEyeIcon.click();
+	Thread.sleep(2000);
+	addDocumentButton.click();
+	chooseDocument.click();
+	Thread.sleep(4000);
+	Runtime.getRuntime().exec(configFileReader.getFilePath());
+	Thread.sleep(2000);
+	uploadDocument.click();
+	
+	
+}
+
+public void cancelPrint() throws InterruptedException, IOException, AWTException {
+	printButton.click();
+	driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+	js = (JavascriptExecutor) driver;
+	js.executeScript("arguments[0].click();", cancelPrint);
+	//cancelPrint.click();
+	/*
+	 * robot = new Robot();
+	 * 
+	 * robot.keyPress(KeyEvent.VK_ESCAPE);
+	 * 
+	 * robot.keyRelease(KeyEvent.VK_ESCAPE);
+	 */
+	
+	
+}
+
+public void validateleadPageNavigation() {
+	String actualUrl = driver.getCurrentUrl();
+	String expectedUrl = configFileReader.getLeadPageUrl();
+  
+	Assert.assertEquals(actualUrl, expectedUrl);
+	
+	
+	
+}
+
+public void downloadLeads(String format) {
+
+	downloadButton.click();
+	driver.findElement(By.xpath("//a[contains(text(),'"+format+"')]")).click();
+	
+	
+	
+}
+
+public void createQuoteLeadPage(String bedCount, String floorPlan, String unit, String leaseTerm, String month, String day, String expireOfferMonth, String expireOfferDay) {
+	
+	creatQuote.click();
+	
+}
+
+public void add_CoApplicants(String FirstName,String LastName,String MobileNo)
+{
+	addButton.click();
+	driver.findElement(By.id("first_name_1")).sendKeys(FirstName);
+	driver.findElement(By.id("last_name_1")).sendKeys(LastName);
+	driver.findElement(By.name("coapplicants[1][mobile]]")).sendKeys(MobileNo);
+	driver.findElement(By.id("edit_coapplicant_button")).click();
+	
+}
+
+public void clickOnOpenButtonOnLead() throws InterruptedException {
+	
+	OpenEyeIcon.click();
+	Thread.sleep(2000);
+}
+
+
+
 
 }
 

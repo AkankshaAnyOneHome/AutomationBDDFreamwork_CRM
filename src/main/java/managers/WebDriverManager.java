@@ -1,7 +1,11 @@
 package managers;
 
 
+import java.awt.Robot;
 import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -14,6 +18,7 @@ import enums.DriverType;
 public class WebDriverManager {
 	private WebDriver driver;
 	private static DriverType driverType;
+
 
 	private static final String CHROME_DRIVER_PROPERTY = "webdriver.chrome.driver";
 	ConfigFileReader configFileReader;
@@ -45,11 +50,23 @@ public class WebDriverManager {
 
         if(configFileReader.getBrowserWindowSize()) driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(configFileReader.getImplicitlyWait(), TimeUnit.SECONDS);
+        
+        driver.manage().deleteAllCookies();
+        driver.get("chrome://settings/clearBrowserData");
+        driver.findElement(By.xpath("//settings-ui")).sendKeys(Keys.ENTER);
+        //driver.findElementByXPath("//settings-ui").sendKeys(Keys.ENTER);
+        
+        
+        
 		return driver;
 	}	
+	
+	
 
-	public void closeDriver() {
-		driver.close();
-		driver.quit();
-	}
+	
+	/*
+	 * public void closeDriver() { driver.close(); driver.quit(); }
+	 */
+	
+	
 }

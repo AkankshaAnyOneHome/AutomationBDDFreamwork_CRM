@@ -1,5 +1,7 @@
 package CRMPages;
 
+import java.util.concurrent.TimeUnit;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -22,6 +24,8 @@ public class CRMPropertiesPage{
 	WebElement OpenEyeIcon;
 	@FindBy(xpath = "//div[@id='schedule_property_event']//a[3]")
 	WebElement btnServiceRequest;
+	@FindBy(xpath = "//div[@id='schedule_property_event']/a[1]/i")
+	WebElement btnSheduleShowing;
 	
 	
 	// Page factory initilization
@@ -31,19 +35,33 @@ public class CRMPropertiesPage{
 		}
 		
 	//Open specific property after search
-		public void SearchOpenProperty() throws InterruptedException {
+		public void SearchOpenProperty(String propertyName) throws InterruptedException {
 			Thread.sleep(2000);
 			MenuProperties.click();
 			Thread.sleep(2000);
-			SearchField.sendKeys("Sitka Meadows");
+			SearchField.sendKeys(propertyName);
 			SearchIcon.click();
 			OpenEyeIcon.click();
-			
-			
+				
 		}
+		
 		public void clickSR()
 		{
 			btnServiceRequest.click();
 		}
+		
+		public void clickOnPropertiesMenu() throws InterruptedException {
+			
+			MenuProperties.click();
+			
+		}
+		
+public void clickOnSceduleShowing() throws InterruptedException {
+			
+	btnSheduleShowing.click();
+	driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			
+		}
+		
 		
 }

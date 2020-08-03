@@ -31,8 +31,8 @@ import dataProviders.ConfigFileReader;
 		
 		  @AfterClass public static void writeExtentReport() { 
 			  ConfigFileReader configFileReader = new ConfigFileReader(); 
-			  Reporter.loadXMLConfig(new File(configFileReader.getReportConfigPath())); }
-		 
+			  Reporter.loadXMLConfig(new File(configFileReader.getReportConfigPath()));}
+		 ///klklk
 
-}
+}//sdghfsdfshdjhgfsfsdfsgh
 //"pretty","html:target/cucumber-reports","com.cucumber.listener.ExtentCucumberFormatter:target/cucumber-reports/report_a.json",

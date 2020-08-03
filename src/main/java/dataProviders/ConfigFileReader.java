@@ -77,6 +77,7 @@ public class ConfigFileReader {
 			else throw new RuntimeException("Report Config Path not specified in the Configuration.properties file for the Key:reportConfigPath");		
 		}
 	  
+	  
 		
 		  public String getLeadFirstName() { String firstName =
 		  properties.getProperty("LeadFirstName"); if(firstName != null) return firstName;
@@ -94,9 +95,14 @@ public class ConfigFileReader {
 		  != null) return status; else throw new
 		  RuntimeException("status not specified in the Configuration.properties file.");
 		  }
-		 
+		  
+		  public String getLeadPageUrl(){
+				String LeadPageUrl = properties.getProperty("LeadPageUrl");
+				if(LeadPageUrl!= null) return LeadPageUrl;
+				else throw new RuntimeException("LeadPageUrl not specified in the Configuration.properties file.");		
+			}
 	 
-	
+		  
 	
 	
 

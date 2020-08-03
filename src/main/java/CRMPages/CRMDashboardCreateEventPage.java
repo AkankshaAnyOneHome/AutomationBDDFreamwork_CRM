@@ -124,6 +124,8 @@ public class CRMDashboardCreateEventPage {
 	WebElement createTabPricingAvail;
 	@FindBy(xpath = "//button[@id='save_btn']")
 	WebElement btnEventCreate;
+	@FindBy(xpath = "//button[@id='save_btn']")
+	WebElement btnMoreCreate;
 	@FindBy(xpath = "//span[@class='h4 prospect-name-panel']")
 	WebElement leadName;
 	
@@ -200,6 +202,21 @@ public class CRMDashboardCreateEventPage {
 	WebElement txtScheduleAgentName;
 	@FindBy(xpath = "//div//span[@class='select2-match']")
 	WebElement SelectScheduleAgentName;
+	@FindBy(xpath = "//div[@id='s2id_event-select2-typedropdown']")
+	WebElement createLeadDropDown;
+	@FindBy(xpath = "//input[@id='end-slider-value")
+	WebElement desiredRenttxtBox;
+	@FindBy(id = "leaselengthSelectList")
+	WebElement desiredLeaseLengthDropdown;
+	@FindBy(id = "noofoccupantsSelectList")
+	WebElement noOfAccupantDropdown;
+	@FindBy(id = "noofbedSelectList")
+	WebElement noOfBedDropdown;
+	@FindBy(id = "noofbathSelectList")
+	WebElement noOfBathDropdown;
+	@FindBy(xpath= "//span[@class='img-circle']")
+	WebElement profileImageIcon;
+	
 	
 	@FindBy(xpath = "//button[@class='btn btn-white btn-sm font-normal dropdown-toggle lead_status_change_btn']")
 	WebElement status;
@@ -221,15 +238,30 @@ public class CRMDashboardCreateEventPage {
 		btnHeaderCreate.click();
 		Thread.sleep(2000);
 	}
-
+	//  Select option
+		public void selectOptionCreateLead(String option) throws InterruptedException {
+			Thread.sleep(2000); 
+			createLeadDropDown.click();
+			Thread.sleep(2000);
+			//xpath to search  create lead option 
+		}
+		
+	
+			public void clickMoreButton() throws InterruptedException {
+				Thread.sleep(2000); 
+				createLeadDropDown.click();
+				Thread.sleep(2000);
+				//xpath to search  create lead option 
+			}
+			
 	// Method for Create event
-	public void createNewLead(String EType, String FName, String LName, String phoneNo, String Email, String ContactType,
+	public void createNewLead(String FName, String LName, String phoneNo, String Email, String ContactType,
 			String fromTime, String ToTime, String propertyName, String floorPlan, String Unit, String Origin,
 			String Source, String MoveInDate)
 			throws InterruptedException, IOException {
 
-		EventTypeVal.sendKeys(EType + Keys.ENTER);	
-		Thread.sleep(2000);
+		//EventTypeVal.sendKeys(EType + Keys.ENTER);	
+		//Thread.sleep(2000);
 		createTxtFirstName.sendKeys(FName);
 		Thread.sleep(1000);
 		createTxtLastName.sendKeys(LName);
@@ -385,7 +417,37 @@ public class CRMDashboardCreateEventPage {
 		Thread.sleep(2000);
 		btnEventCreate.click();
 	}
-
+	
+	public void clickOnMoreBtn() throws InterruptedException {
+		Thread.sleep(2000);
+		btnMoreCreate.click();
+	}
+	
+	public void guestDesire(String desiredMonthlyRent, String desiredLeaseLength, String occupants, String beds, String bath, String washer) throws InterruptedException {
+		Thread.sleep(2000);
+	
+	desiredRenttxtBox.sendKeys(desiredMonthlyRent);
+	Thread.sleep(1000);
+	desiredLeaseLengthDropdown.click();
+	Thread.sleep(1000);
+	driver.findElement(By.xpath("//div[@id='leaselengthSelectList']/ul/li/a[text()='"+desiredLeaseLength+"']")).click();
+	Thread.sleep(1000);
+	noOfAccupantDropdown.click();
+	Thread.sleep(1000);
+	driver.findElement(By.xpath("//*[@id='noofoccupantsSelectList']/ul/li/a[text()='"+occupants+"']")).click();
+	Thread.sleep(1000);
+	noOfBedDropdown.click();
+	Thread.sleep(1000);
+	driver.findElement(By.xpath("//*[@id='noofbedSelectList']/ul/li/a[text()='"+beds+"']")).click();
+	Thread.sleep(1000);
+	noOfBathDropdown.click();
+	driver.findElement(By.xpath("//*[@id='noofbathSelectList']/ul/li/a[text()='"+bath+"']")).click();
+	Thread.sleep(1000);
+	//Washer/Dryer Preference - xpath
+	
+	
+	
+	}
 	
 
 	// Method for Create log book showing
@@ -701,5 +763,10 @@ public class CRMDashboardCreateEventPage {
 		txtEntryNotes.sendKeys(ENotes);
 		txtSRNotes.sendKeys(SRNotes);
 
+	}
+	public void clickOnProfileImageIcon() throws InterruptedException {
+		
+		profileImageIcon.click();
+		Thread.sleep(2000);
 	}
 }
